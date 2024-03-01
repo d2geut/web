@@ -1,13 +1,16 @@
+import Navbar from "./components/Navbar.js";
 import Main from "./components/Main.js";
+import Login from "./components/Login.js";
 import MyPage from "./components/Mypage.js";
 import Friend from "./components/Friend.js";
 import NotFound from "./components/NotFound.js";
 
 const routes = [
-	{ path: "/", component: Main},
-	{ path: "/mypage", component: MyPage},
-	{ path: "/friend", component: Friend},
-	{ path: "/404", component: NotFound},
+	{ path: "/", component: [Main, Navbar]},
+	{ path: "/login", component: [Login]},
+	{ path: "/mypage", component: [MyPage, Navbar]},
+	{ path: "/friend", component: [Friend, Navbar]},
+	{ path: "/404", component: [NotFound]},
 ];
 
 const navigateTo = url => {
@@ -32,8 +35,16 @@ const router = async () => {
 		}
 	}
 
-	const component = new match.route.component();
+	const component = new match.route.component[0]();
 	document.querySelector("#app").innerHTML = await component.getHtml();
+	if (match.route.component[1]) {
+		const navbar = new match.route.component[1]();
+		if (navbar)
+			document.querySelector("#nav").innerHTML = await navbar.getHtml();
+	}
+	else {
+		document.querySelector("#nav").innerHTML = await ``;
+	}
 }
 
 window.addEventListener("popstate", router);
@@ -46,3 +57,5 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	});
 });
+
+router();

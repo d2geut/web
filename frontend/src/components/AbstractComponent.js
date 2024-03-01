@@ -1,6 +1,6 @@
 export default class {
 	constructor() {
-
+		
 	}
 
 	setTitle(title) {

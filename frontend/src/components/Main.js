@@ -10,8 +10,8 @@ export default class extends AbstractComponent {
 		return `
 		<h1>Welcome!</h1>
 		<p>This is Main page.</p>
-		<button class="btn" data-href="/local">LOCAL</button>
-		<button class="btn" data-href="/lobby">ONLINE</button>
+		<button class="btn btn-outline-primary" data-href="/local">LOCAL</button>
+		<button class="btn btn-outline-primary" data-href="/lobby">ONLINE</button>
 		`;
 	}
 }
