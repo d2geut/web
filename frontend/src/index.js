@@ -3,6 +3,7 @@ import Main from "./components/Main.js";
 import Login from "./components/Login.js";
 import MyPage from "./components/Mypage.js";
 import Friend from "./components/Friend.js";
+import Lobby from "./components/Lobby.js";
 import NotFound from "./components/NotFound.js";
 
 const routes = [
@@ -10,6 +11,7 @@ const routes = [
 	{ path: "/login", component: [Login]},
 	{ path: "/mypage", component: [MyPage, Navbar]},
 	{ path: "/friend", component: [Friend, Navbar]},
+	{ path: "/lobby", component: [Lobby, Navbar]},
 	{ path: "/404", component: [NotFound]},
 ];
 
@@ -45,6 +47,8 @@ const router = async () => {
 	else {
 		document.querySelector("#nav").innerHTML = await ``;
 	}
+	console.log("load router");
+	component.handleRoute();
 }
 
 window.addEventListener("popstate", router);
