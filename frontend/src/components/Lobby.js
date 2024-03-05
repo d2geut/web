@@ -29,19 +29,19 @@ export default class extends AbstractComponent {
 							<div class="row">
 								<div class="col">
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+											<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="easy" checked>
 											<label class="form-check-label" for="flexRadioDefault1">
 												EASY
 											</label>
 										</div>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+											<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="normal">
 											<label class="form-check-label" for="flexRadioDefault2">
 												NORMAL
 											</label>
 										</div>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+											<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" value="hard">
 											<label class="form-check-label" for="flexRadioDefault3">
 												HARD
 											</label>
@@ -49,13 +49,13 @@ export default class extends AbstractComponent {
 								</div>
 								<div class="col">
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="flexRadioHC" id="flexRadioHC1" checked>
+											<input class="form-check-input" type="radio" name="flexRadioHC" id="flexRadioHC1" value="1:1" checked>
 											<label class="form-check-label" for="flexRadioHC1">
 												1:1
 											</label>
 										</div>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="flexRadioHC" id="flexRadioHC2">
+											<input class="form-check-input" type="radio" name="flexRadioHC" id="flexRadioHC2" value="tournament">
 											<label class="form-check-label" for="flexRadioHC2">
 												4인 토너먼트
 											</label>
@@ -104,7 +104,8 @@ export default class extends AbstractComponent {
 	/* gameroom {
 		id: Date.now();
 		name:
-		content:
+		level:
+		mode:
 	} */
 
 	setTabList(tabContent) {
@@ -123,7 +124,16 @@ export default class extends AbstractComponent {
 		tabPane.setAttribute("id", `list-${tabID}`);
 		tabPane.setAttribute("role", "tabpanel");
 		tabPane.setAttribute("aria-labelledby", `list-${tabID}-list`);
-		tabPane.innerText = tabContent.content;
+
+		const tabPaneName = document.createElement("h3");
+		tabPaneName.innerText = tabContent.name;
+		const tabPaneLevel = document.createElement("p");
+		tabPaneLevel.innerText = `Level: ${tabContent.level}`;
+		const tabPaneMode = document.createElement("p");
+		tabPaneMode.innerText = `Mode: ${tabContent.mode}`;
+		tabPane.appendChild(tabPaneName);
+		tabPane.appendChild(tabPaneLevel);
+		tabPane.appendChild(tabPaneMode);
 
 		document.querySelector('#list-tab').appendChild(tabItem);
 		document.querySelector('#nav-tabContent').appendChild(tabPane);
@@ -137,6 +147,7 @@ export default class extends AbstractComponent {
 		
 		if (saveTabList !== null) {
 			const parsedTabList = JSON.parse(saveTabList);
+			gameRooms = parsedTabList;
 			parsedTabList.forEach(this.setTabList);
 		}
 	}
@@ -158,10 +169,18 @@ export default class extends AbstractComponent {
 		})
 
 		const gameRoomSaveBtn = document.querySelector("#gameroom-save");
-		gameRoomEnterBtn.addEventListener("click", event => {
-			const selectGameRoom = document.querySelector("[aria-selected='true']");
-
-			// document.querySelector('#title-name').value
+		gameRoomSaveBtn.addEventListener("click", event => {
+			event.preventDefault();
+			const newGameRoom = {
+				id: Date.now(),
+				name: document.querySelector("#title-name").value,
+				level: document.querySelector("input[name='flexRadioDefault']:checked").value,
+				mode: document.querySelector("input[name='flexRadioHC']:checked").value,
+			}
+			gameRooms.push(newGameRoom);
+			localStorage.setItem(GAMEROOM_KEY, JSON.stringify(gameRooms));
+			this.reloadTabList();
+			console.log("add GameRoom!");
 		})
 	}
 }
