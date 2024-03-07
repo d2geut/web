@@ -2,7 +2,6 @@ import Navbar from "./components/Navbar.js";
 import Main from "./components/Main.js";
 import Login from "./components/Login.js";
 import MyPage from "./components/Mypage.js";
-import Friend from "./components/Friend.js";
 import Lobby from "./components/Lobby.js";
 import NotFound from "./components/NotFound.js";
 
@@ -10,7 +9,6 @@ const routes = [
 	{ path: "/", component: [Main, Navbar]},
 	{ path: "/login", component: [Login]},
 	{ path: "/mypage", component: [MyPage, Navbar]},
-	{ path: "/friend", component: [Friend, Navbar]},
 	{ path: "/lobby", component: [Lobby, Navbar]},
 	{ path: "/404", component: [NotFound]},
 ];
@@ -42,7 +40,10 @@ const router = async () => {
 	if (match.route.component[1]) {
 		const navbar = new match.route.component[1]();
 		if (navbar)
+		{
 			document.querySelector("#nav").innerHTML = await navbar.getHtml();
+			navbar.handleRoute();
+		}
 	}
 	else {
 		document.querySelector("#nav").innerHTML = await ``;

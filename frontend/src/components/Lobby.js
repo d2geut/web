@@ -13,11 +13,11 @@ export default class extends AbstractComponent {
 	async getHtml() {
 		return `
 		<!-- Modal -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="openGameRoomModal" tabindex="-1" aria-labelledby="openGameRoomModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="exampleModalLabel">방 만들기</h1>
+						<h1 class="modal-title fs-5" id="openGameRoomModalLabel">방 만들기</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -28,36 +28,38 @@ export default class extends AbstractComponent {
 							</div>
 							<div class="row">
 								<div class="col">
+									<label class="col-form-label">MODE</label>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="easy" checked>
-											<label class="form-check-label" for="flexRadioDefault1">
+											<input class="form-check-input" type="radio" name="flexRadioMode" id="flexRadioMode1" value="easy" checked>
+											<label class="form-check-label" for="flexRadioMode1">
 												EASY
 											</label>
 										</div>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="normal">
-											<label class="form-check-label" for="flexRadioDefault2">
+											<input class="form-check-input" type="radio" name="flexRadioMode" id="flexRadioMode2" value="normal">
+											<label class="form-check-label" for="flexRadioMode2">
 												NORMAL
 											</label>
 										</div>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" value="hard">
-											<label class="form-check-label" for="flexRadioDefault3">
+											<input class="form-check-input" type="radio" name="flexRadioMode" id="flexRadioMode3" value="hard">
+											<label class="form-check-label" for="flexRadioMode3">
 												HARD
 											</label>
 										</div>
 								</div>
 								<div class="col">
+									<label class="col-form-label">PLAYER</label>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="flexRadioHC" id="flexRadioHC1" value="1:1" checked>
+											<input class="form-check-input" type="radio" name="flexRadioHC" id="flexRadioHC1" value="2" checked>
 											<label class="form-check-label" for="flexRadioHC1">
-												1:1
+												2 player
 											</label>
 										</div>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="flexRadioHC" id="flexRadioHC2" value="tournament">
+											<input class="form-check-input" type="radio" name="flexRadioHC" id="flexRadioHC2" value="4">
 											<label class="form-check-label" for="flexRadioHC2">
-												4인 토너먼트
+												4 player
 											</label>
 										</div>
 								</div>
@@ -95,7 +97,7 @@ export default class extends AbstractComponent {
 					<div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">settingssettingssettings</div>
 				</div>
 				<button type="button" class="btn btn-outline-dark" id="gameroom-enter">방 참가</button>
-				<button type="button" class="btn btn-outline-dark" id="gameroom-open" data-bs-toggle="modal" data-bs-target="#exampleModal">방 만들기</button>
+				<button type="button" class="btn btn-outline-dark" id="gameroom-open" data-bs-toggle="modal" data-bs-target="#openGameRoomModal">방 만들기</button>
 			</div>
 		</div>
 		`;
@@ -104,8 +106,8 @@ export default class extends AbstractComponent {
 	/* gameroom {
 		id: Date.now();
 		name:
-		level:
 		mode:
+		player:
 	} */
 
 	setTabList(tabContent) {
@@ -127,13 +129,13 @@ export default class extends AbstractComponent {
 
 		const tabPaneName = document.createElement("h3");
 		tabPaneName.innerText = tabContent.name;
-		const tabPaneLevel = document.createElement("p");
-		tabPaneLevel.innerText = `Level: ${tabContent.level}`;
 		const tabPaneMode = document.createElement("p");
 		tabPaneMode.innerText = `Mode: ${tabContent.mode}`;
+		const tabPanePlayer = document.createElement("p");
+		tabPanePlayer.innerText = `Player: ${tabContent.player} player`;
 		tabPane.appendChild(tabPaneName);
-		tabPane.appendChild(tabPaneLevel);
 		tabPane.appendChild(tabPaneMode);
+		tabPane.appendChild(tabPanePlayer);
 
 		document.querySelector('#list-tab').appendChild(tabItem);
 		document.querySelector('#nav-tabContent').appendChild(tabPane);
@@ -174,8 +176,8 @@ export default class extends AbstractComponent {
 			const newGameRoom = {
 				id: Date.now(),
 				name: document.querySelector("#title-name").value,
-				level: document.querySelector("input[name='flexRadioDefault']:checked").value,
-				mode: document.querySelector("input[name='flexRadioHC']:checked").value,
+				mode: document.querySelector("input[name='flexRadioMode']:checked").value,
+				player: document.querySelector("input[name='flexRadioHC']:checked").value,
 			}
 			gameRooms.push(newGameRoom);
 			localStorage.setItem(GAMEROOM_KEY, JSON.stringify(gameRooms));
