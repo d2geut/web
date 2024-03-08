@@ -64,6 +64,7 @@ export default class extends AbstractComponent {
 		const friendListNode = friendListTemplate.content.children[0];
 		const newFriendListNode = friendListNode.cloneNode(true);
 		const newFriendListNodeA = newFriendListNode.querySelector("a");
+		newFriendListNodeA.setAttribute("href", `/users/${element}`);
 		newFriendListNodeA.innerText = element;
 		friendList.appendChild(newFriendListNode);
 
